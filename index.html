@@ -474,7 +474,7 @@ window.onload = function() {
             };
 
 
-        client.comment('', 'hive-160391', this.username, titl, posttit, commentbody, jsonMetadata, function(err, result) {
+        client.comment('', 'hive-105271', this.username, titl, posttit, commentbody, jsonMetadata, function(err, result) {
           console.log('Comment result', err, result);
           self.isLoading = false;
           if (result) self.txId = result.id || result.result.id;
