@@ -344,7 +344,7 @@ link.href = btoa(urlparameters);</script>
     <div v-if="username">
       <p class="mb-4">
         You are connected to your Hive account: <b>{{username}}</b>
-        <a href="https://aliquam.azurewebsites.net/?" onclick="location.href=this.href+alitag;return false;" @click="logout" >logout</a>
+        <a href="https://hive.aliquam.org/?" onclick="location.href=this.href+alitag;return false;" @click="logout" >logout</a>
       </p>
 
       <div>
@@ -751,7 +751,7 @@ a.bttn-dark {
     }
   }
 }</style>
-<script>setInterval(function(){if ((window.location.search.indexOf('usr') !== -1) && (window.localStorage.getItem('sc_token') !== null) && (window.location.search.indexOf('access_token') !== -1)) {window.location.replace('https://aliquam.azurewebsites.net/?username='+usern+alimeta)}},500);</script>
+<script>setInterval(function(){if ((window.location.search.indexOf('usr') !== -1) && (window.localStorage.getItem('sc_token') !== null) && (window.location.search.indexOf('access_token') !== -1)) {window.location.replace('https://hive.aliquam.org/?username='+usern+alimeta)}},500);</script>
 <script>setInterval(function(){if (document.getElementById('markdowntitle').value == '') {document.getElementById('markdowntitle').value = '"'+titl+'" by '+usr}},10000);</script>
 
 <script>if (window.location.search.indexOf('usr') == -1) {
