@@ -334,7 +334,7 @@ else {}</script>
   <div v-else>
     <div v-if="!username">
        <div>
-          <a href="https://hivesigner.com/oauth2/authorize?client_id=aliquam.app&redirect_uri=https://aliquam.azurewebsites.net&scope=vote,comment&state="
+          <a href="https://hivesigner.com/oauth2/authorize?client_id=aliquam.app&redirect_uri=https://hive.aliquam.org/&scope=vote,comment&state="
         onclick="location.href=this.href+alitagx;return false;" class="bttn">Connect to Hive</a>
       </div>
     </div>
@@ -474,7 +474,7 @@ window.onload = function() {
             };
 
 
-        client.comment('', 'aliquam', this.username, titl, posttit, commentbody, jsonMetadata, function(err, result) {
+        client.comment('', 'hive-160391', this.username, titl, posttit, commentbody, jsonMetadata, function(err, result) {
           console.log('Comment result', err, result);
           self.isLoading = false;
           if (result) self.txId = result.id || result.result.id;
