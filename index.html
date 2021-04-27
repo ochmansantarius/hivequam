@@ -405,6 +405,7 @@ window.onload = function() {
     mounted: function () {
       let params = (new URL(location)).searchParams;
       const token = params.get('access_token') || localStorage.getItem('sc_token');
+      const usernamex = params.get('username') || localStorage.getItem('username');
       if (token) {
         const self = this;
         this.isInit = false;
@@ -414,7 +415,7 @@ window.onload = function() {
           if (result) self.username = result.name;
           if (err) self.error = err;
           localStorage.setItem('sc_token', token);
-          localStorage.setItem('username', urlParams.get('username'))
+          localStorage.setItem('username', usernamex)
           self.isInit = true;
           console.log(err, result);
         });
