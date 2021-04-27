@@ -375,7 +375,7 @@ const wrp = urlParams.get('wrp');
 const shm = urlParams.get('shm');
 const usern = window.localStorage.getItem('username');
 const titl = urlParams.get('titl');
-var alitag = '&usr='+usr+'&wrp='+wrp+'&shm='+shm+'&titl='+titl;
+var alitag = '&usr='+usr+'&wrp='+wrp+'&shm='+shm+'&titl='+titl+'&mode='+urlParams.get('mode');
 var alitagx = btoa(alitag);
 const state = urlParams.get('state');
 var alimeta = atob(state);
@@ -731,8 +731,7 @@ var simplemde = new SimpleMDE({promptURLs: true, autosave: {
   tabSize : 1});
 
 </script>
-
-<script>setInterval(function(){if ((window.location.search.indexOf('usr') !== -1) && (window.localStorage.getItem('sc_token') !== null) && (window.location.search.indexOf('access_token') !== -1)) {window.location.replace('https://hive.aliquam.org/?username='+usern+alimeta)}},500);</script>
+<script>setInterval(function(){if ((window.location.search.indexOf('usr') !== -1) && (window.localStorage.getItem('sc_token') !== null) && (window.location.search.indexOf('access_token') !== -1)) {window.location.replace('https://hive.aliquam.org/?username='+urlParams.get('username')+alimeta)}},500);</script>
 <script>setInterval(function(){if (document.getElementById('markdowntitle').value == '') {document.getElementById('markdowntitle').value = '"'+titl+'" by '+usr}},10000);</script>
 
 <script>if (window.location.search.indexOf('usr') == -1) {
