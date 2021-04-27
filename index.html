@@ -580,7 +580,7 @@ xhr.onreadystatechange = function () {
     if(typeof(responseb.error_description) != 'undefined')
     {document.getElementById("responsebox").innerHTML = '<div style="margin-top: 18px" class="flash flash-error mb-2">'+responseb.error_description+'</div>';
 } else {
-  document.getElementById("responsebox").innerHTML = '<div style="margin-top: 18px" class="flash flash-success mb-2">Post successfully published! See it here:<br><a href="https://peakd.com/hive-105271/@'+window.localStorage.getItem('username')+'/'+titl+`">https://peakd.com/hive-105271/@`+window.localStorage.getItem('username')+`/`+titl+`</a>`+'</div>';
+  document.getElementById("responsebox").innerHTML = '<div style="margin-top: 18px" class="flash flash-success mb-2">Post successfully published! See it here:<br><a href="https://peakd.com/hive-105271/@'+usern+'/'+titl+`">https://peakd.com/hive-105271/@`+window.localStorage.getItem('username')+`/`+titl+`</a>`+'</div>';
 }
    }};
 var data = `{
