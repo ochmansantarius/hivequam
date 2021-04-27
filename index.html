@@ -375,7 +375,7 @@ const wrp = urlParams.get('wrp');
 const shm = urlParams.get('shm');
 const usern = window.localStorage.getItem('username');
 const titl = urlParams.get('titl');
-var alitag = '&usr='+usr+'&wrp='+wrp+'&shm='+shm+'&titl='+titl+'&mode='+urlParams.get('mode');
+var alitag = '&usr='+usr+'&wrp='+wrp+'&shm='+shm+'&titl='+titl+'&mode='+urlParams.get('mode')+'&author='+urlParams.get('author');
 var alitagx = btoa(alitag);
 const state = urlParams.get('state');
 var alimeta = atob(state);
