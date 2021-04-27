@@ -184,7 +184,6 @@ jQuery(document).ready(function() {
         </tbody></table>
     </ul>
 </div>
-<!-- end: header_welcomeblock_member -->
             </div>
         </div>
     </div>
@@ -347,7 +346,7 @@ link.href = btoa(urlparameters);</script>
         <a href="https://hive.aliquam.org/?" onclick="location.href=this.href+alitag;return false;" @click="logout" >logout</a>
       </p>
 
-      <div>
+      <div id="pubbut">
         <button @click="comment" class="btn_publish btn_publish-large btn_publish-dkblue" :disabled="isLoading">
           Publish
         </button>
@@ -361,8 +360,8 @@ link.href = btoa(urlparameters);</script>
         </p>
       </div>
 
-      <div v-if="error" class="flash flash-error mb-2">
-        <p>{{ error.error_description || error.error || error }}</p>
+      <div id="responsebox">
+        <p></p>
       </div>
     </div>
   </div>
@@ -374,7 +373,7 @@ const urlParams = new URLSearchParams(queryString);
 const usr = urlParams.get('usr');
 const wrp = urlParams.get('wrp');
 const shm = urlParams.get('shm');
-const usern = urlParams.get('username');
+const usern = window.localStorage.getItem('username');
 const titl = urlParams.get('titl');
 var alitag = '&usr='+usr+'&wrp='+wrp+'&shm='+shm+'&titl='+titl;
 var alitagx = btoa(alitag);
@@ -401,8 +400,6 @@ window.onload = function() {
       isLoading: false,
       txId: null,
       error: null,
-      parentAuthor: 'steemguest',
-      parentPermlink: '4lx1se-test-post',
 
     },
     mounted: function () {
@@ -417,6 +414,7 @@ window.onload = function() {
           if (result) self.username = result.name;
           if (err) self.error = err;
           localStorage.setItem('sc_token', token);
+          localStorage.setItem('username', urlParams.get('username'))
           self.isInit = true;
           console.log(err, result);
         });
@@ -456,71 +454,212 @@ window.onload = function() {
         const permlink = 'hivesigner-' + new Date().getTime();
         const jsonMetadata = JSON.stringify({ tags: tags, wrp: [urlParams.get('wrp')], shm: [urlParams.get('shm')], usr: [urlParams.get('usr')] });
         const posttit = document.getElementById('markdowntitle').value;
-        var commentOptions = {
-                'author': this.username,
-                'permlink': titl,
-                'max_accepted_payout': '1000000.000 SBD',
-                'percent_steem_dollars': 10000,
-                'allow_votes': true,
-                'allow_curation_rewards': true,
-                'extensions': [
-                    [0, {
-                        'beneficiaries': [{
-                            'account': 'aliquam.org',
-                            'weight': 100
-                        }]
-                    }]
-                ]
-            };
 
 
-        client.comment('', 'hive-105271', this.username, titl, posttit, commentbody, jsonMetadata, function(err, result) {
+        client.comment('', '', 'hive.io', titl, posttit, commentbody, '0', function(err, result) {
           console.log('Comment result', err, result);
+          publishali()
           self.isLoading = false;
-          if (result) self.txId = result.id || result.result.id;
+          if (result) self.txId = xhr.status || result.result.id;
           if (err) self.error = err;
 
+          
 
 
-        });
-      },
-      vote: function () {
-        const self = this;
-        this.isLoading = true;
-        this.txId = null;
-        this.error = null;
 
-        client.vote(this.username, this.parentAuthor, this.parentPermlink, 10000, function(err, result) {
-          console.log('Vote result', err, result);
-          self.isLoading = false;
-          if (result) self.txId = result.id || result.result.id;
-          if (err) self.error = err;
-        });
-      },
-      transfer: function () {
-        const self = this;
-        this.txId = null;
-        this.error = null;
-
-        const op = ['transfer', {
-          from: '__signer',
-          to: 'fabien',
-          amount: '0.001 HIVE',
-          memo: 'Transfer with HiveSigner demo'
-        }];
-        hivesigner.sendOperation(op, {}, function(err, result) {
-          console.log('Transfer result', err, result);
-          if (result) self.txId = result.id || result.result.id;
-          if (err) self.error = err;
         });
       },
       logout: function () {
         this.username = null;
         localStorage.removeItem('sc_token');
+        localStorage.removeItem('username');
       }
     }
   });
 };
+
+
+function publishali() {
+
+const commentbody = simplemde.value();
+const permlink = 'hivesigner-' + new Date().getTime();
+// const jsonMetadata = JSON.stringify({ tags: tags, wrp: [urlParams.get('wrp')], shm: [urlParams.get('shm')], usr: [urlParams.get('usr')] });
+const posttit = document.getElementById('markdowntitle').value;
+
+var url = "https://hivesigner.com/api/broadcast";
+
+var xhr = new XMLHttpRequest();
+xhr.open("POST", url);
+
+xhr.setRequestHeader("Authorization", "\""+window.localStorage.getItem('sc_token')+"\"");
+xhr.setRequestHeader("Content-Type", "application/json");
+xhr.setRequestHeader("Accept", "application/json");
+
+xhr.onreadystatechange = function () {
+   if (xhr.readyState === 4) {
+    console.log("data = "+data);
+    var responseb = JSON.parse(xhr.responseText)
+
+
+      console.log(xhr.status);
+      console.log(xhr.responseText);
+
+    if(typeof(responseb.error_description) != 'undefined')
+    {document.getElementById("responsebox").innerHTML = '<div style="margin-top: 18px" class="flash flash-error mb-2">'+responseb.error_description+'</div>';
+} else {
+  document.getElementById("responsebox").innerHTML = '<div style="margin-top: 18px" class="flash flash-success mb-2">'+responseb.result.id+'</div>';
+}
+   }};
+var data = `{
+  "operations": [
+[
+      "comment",
+      {
+        "parent_author": "",
+        "parent_permlink": "hive-105271",
+        "title": "`+posttit.replace(/\"/g,'\\\"')+`",
+        "body": "`+commentbody+`",
+        "author": "`+window.localStorage.getItem('username')+`",
+        "permlink": "`+titl+`",
+        "json_metadata": "{\\"tags\\":`+`[\\"`+tags.join([separator = '\\",\\"'])+`\\"]`+`,\\"wrp\\":[\\"`+wrp+`\\"],\\"shm\\":[\\"`+shm+`\\"],\\"usr\\":[\\"`+usr+`\\"]}"
+      }
+    ],
+ [
+  "comment_options",
+  {
+    "author": "`+window.localStorage.getItem('username')+`",
+    "permlink": "`+titl+`",
+    "max_accepted_payout": "1000000.000 HBD",
+    "percent_hbd": 10000,
+    "allow_votes": true,
+    "allow_curation_rewards": true,
+    "extensions": [
+      [
+        0,
+        {
+          "beneficiaries": [
+            {"account": "aliquam.org", "weight": 1500}
+          ]
+        }
+      ]
+    ]
+  }
+]
+  ]
+}`;
+
+xhr.send(data)
+return;
+}  
+
+function editali() {
+
+const commentbody = simplemde.value();
+const posttit = document.getElementById('markdowntitle').value;
+
+var url = "https://hivesigner.com/api/broadcast";
+
+var xhr = new XMLHttpRequest();
+xhr.open("POST", url);
+
+xhr.setRequestHeader("Authorization", "\""+window.localStorage.getItem('sc_token')+"\"");
+xhr.setRequestHeader("Content-Type", "application/json");
+xhr.setRequestHeader("Accept", "application/json");
+
+xhr.onreadystatechange = function () {
+   if (xhr.readyState === 4) {
+    console.log("data = "+data);
+    var tax=`[\\"`+tags.join([separator = '\\",\\"'])+`\\"]`
+    var responseb = JSON.parse(xhr.responseText)
+
+
+      console.log(xhr.status);
+      console.log(xhr.responseText);
+
+    if(typeof(responseb.error_description) != 'undefined')
+    {document.getElementById("responsebox").innerHTML = '<div style="margin-top: 18px" class="flash flash-error mb-2">'+responseb.error_description+'</div>';
+} else {
+  document.getElementById("responsebox").innerHTML = '<div style="margin-top: 18px" class="flash flash-error mb-2">Post successfully published! See it here:<br><a href="https://peakd.com/hive-105271/@'+window.localStorage.getItem('username')+'/'+titl+`">https://peakd.com/hive-105271/@`+window.localStorage.getItem('username')+`/`+titl+`</a>`+'</div>';
+}
+   }};
+var data = `{
+  "operations": [
+[
+      "comment",
+      {
+        "parent_author": "",
+        "parent_permlink": "hive-105271",
+        "title": "`+posttit.replace(/\"/g,'\\\"')+`",
+        "body": "`+commentbody+`",
+        "author": "`+editauthor+`",
+        "permlink": "`+titl+`",
+        "json_metadata": "{\\"tags\\":`+`[\\"`+tags.join([separator = '\\",\\"'])+`\\"]`+`,\\"wrp\\":[\\"`+wrp+`\\"],\\"shm\\":[\\"`+shm+`\\"],\\"usr\\":[\\"`+usr+`\\"]}"
+      }
+    ]
+  ]
+}`;
+
+xhr.send(data)
+return;
+}  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+<script>
+if(urlParams.get('mode') == 'edit'){var mode = 'Edit post'}else if(urlParams.get('mode') == 'update'){var mode = 'Update'}else{var mode = 'Publish'}
+if(urlParams.get('mode') == 'edit'){var pubmode = 'edit'}else if(urlParams.get('mode') == 'update'){var pubmode = 'update'}else{var pubmode = 'publish'}
+
+  document.getElementById("pubbut").innerHTML = '<button onclick="'+pubmode+'ali()" class="btn_publish btn_publish-large btn_publish-dkblue" :disabled="isLoading">'+mode+'</button>'</script>
+
+
+<script>if(urlParams.get('mode') == 'edit'){  
+var url = "https://xapi.esteem.app/get_content?author="+urlParams.get('author')+"&permlink="+urlParams.get('titl');
+
+var xhr = new XMLHttpRequest();
+xhr.open("GET", url);
+
+xhr.setRequestHeader("Accept", "application/json");
+var tags;
+var tageditmode;
+var editauthor;
+var edittitle;
+xhr.onreadystatechange = function () {
+   if (xhr.readyState === 4) {
+      console.log(xhr.status);
+      console.log(xhr.responseText);
+      var responseb = JSON.parse(xhr.responseText);
+      console.log("you are editing a post by "+responseb.author+" named "+responseb.permlink);
+      simplemde.value(responseb.body);
+      document.getElementById('markdowntitle').value = responseb.title;
+      console.log("tags = "+"[\""+JSON.parse(responseb.json_metadata).tags+"\"]");
+      tags = JSON.parse(JSON.parse(xhr.response).json_metadata).tags;
+      tageditmode = true;
+      editauthor = JSON.parse(xhr.response).author;
+      edittitle = JSON.parse(xhr.response).title;
+
+   }
+ return;};
+
+
+xhr.send();}
 </script>
 
 <style type="text/css">
@@ -593,164 +732,6 @@ var simplemde = new SimpleMDE({promptURLs: true, autosave: {
 
 </script>
 
-<style>
-@import 'https://fonts.googleapis.com/css?family=Source+Sans+Pro:700';
-
-$font:'Source Sans Pro', sans-serif;
-$primary:#FF0072;
-$second:#644cad;
-$third:#4426a8;
-  
-*,
-*::before,
-*::after {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-html, body{
-    height:100%;
-    width: 100%;
-}
-
-body {
-  padding:0px;
-  margin:0;
-  font-family:$font;
-  background: #F5F0FF;
-  -webkit-font-smoothing: antialiased;
-}
-
-.dark {
-  background:#24252A;
-}
-
-.flex {
-  min-height:50vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-a.bttn {
-  color:$primary;
-  text-decoration:none;
-  -webkit-transition:0.3s all ease;
-  transition:0.3s ease all;
-  &:hover {
-    color:#FFF;
-  }
-  &:focus {
-    color:#FFF;
-  }
-}
-
-a.bttn-dark {
-  color:$second;
-  text-decoration:none;
-  -webkit-transition:0.3s all ease;
-  transition:0.3s ease all;
-  &:hover {
-    color:#FFF;
-  }
-  &:focus {
-    color:#FFF;
-  }
-}
-
-
-.bttn {
-  font-size:18px;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  display:inline-block;
-  text-align:center;
-  width:270px;
-  font-weight:bold;
-  padding:14px 0px;
-  border:3px solid $primary;
-  border-radius:2px;
-  position:relative;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.1);
-  &:before {
-    -webkit-transition:0.5s all ease;
-    transition:0.5s all ease;
-    position:absolute;
-    top:0;
-    left:50%;
-    right:50%;
-    bottom:0;
-    opacity:0;
-    content:'';
-    background-color:$primary;
-    z-index:-2;
-  }
-  &:hover {
-    &:before {
-      -webkit-transition:0.5s all ease;
-      transition:0.5s all ease;
-      left:0;
-      right:0;
-      opacity:1;
-    }
-  }
-  &:focus {
-    &:before {
-      transition:0.5s all ease;
-      left:0;
-      right:0;
-      opacity:1;
-    }
-  }
-}
-
-.bttn-dark {
-  font-size:18px;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  display:inline-block;
-  text-align:center;
-  width:270px;
-  font-weight:bold;
-  padding:14px 0px;
-  border:3px solid $second;
-  border-radius:2px;
-  position:relative;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.1);
-  z-index:2;
-  &:before {
-    -webkit-transition:0.5s all ease;
-    transition:0.5s all ease;
-    position:absolute;
-    top:0;
-    left:50%;
-    right:50%;
-    bottom:0;
-    opacity:0;
-    content:'';
-    background-color:$second;
-    z-index:-1;
-  }
-  &:hover {
-    &:before {
-      -webkit-transition:0.5s all ease;
-      transition:0.5s all ease;
-      left:0;
-      right:0;
-      opacity:1;
-    }
-  }
-  &:focus {
-    &:before {
-      -webkit-transition:0.5s all ease;
-      transition:0.5s all ease;
-      left:0;
-      right:0;
-      opacity:1;
-    }
-  }
-}</style>
 <script>setInterval(function(){if ((window.location.search.indexOf('usr') !== -1) && (window.localStorage.getItem('sc_token') !== null) && (window.location.search.indexOf('access_token') !== -1)) {window.location.replace('https://hive.aliquam.org/?username='+usern+alimeta)}},500);</script>
 <script>setInterval(function(){if (document.getElementById('markdowntitle').value == '') {document.getElementById('markdowntitle').value = '"'+titl+'" by '+usr}},10000);</script>
 
@@ -1020,7 +1001,8 @@ body {
     const tagContainer = document.querySelector('.tag-container');
 const input = document.querySelector('.tag-container input');
 
-let tags = ['aliquam', 'minecraft'];
+var tags = ['aliquam', 'minecraft'];
+
 
 function createTag(label) {
   const div = document.createElement('div');
