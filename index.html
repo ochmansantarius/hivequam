@@ -449,7 +449,6 @@ window.onload = function() {
         this.txId = null;
         this.error = null;
 
-        const commentbody = simplemde.value();
         const permlink = 'hivesigner-' + new Date().getTime();
         const jsonMetadata = JSON.stringify({ tags: tags, wrp: [urlParams.get('wrp')], shm: [urlParams.get('shm')], usr: [urlParams.get('usr')] });
         const posttit = document.getElementById('markdowntitle').value;
@@ -516,7 +515,7 @@ var data = `{
         "parent_author": "",
         "parent_permlink": "hive-105271",
         "title": "`+posttit.replace(/\"/g,'\\\"')+`",
-        "body": "`+commentbody.replace(/\\n/g,'\\\\n').replace(/\</g,'\\\<').replace(/\>/g,'\\\>').replace(/\"/g,'\\\"').replace(/\[/g,'\\\[').replace(/\]/g,'\\\]').replace(/\{/g,'\\\{').replace(/\}/g,'\\\}')+`",
+        "body": "`+simplemde.value().replace(/\\n/g,'\\\\n').replace(/\</g,'\\\<').replace(/\>/g,'\\\>').replace(/\"/g,'\\\"').replace(/\[/g,'\\\[').replace(/\]/g,'\\\]').replace(/\{/g,'\\\{').replace(/\}/g,'\\\}')+`",
         "author": "`+window.localStorage.getItem('username')+`",
         "permlink": "`+titl+`",
         "json_metadata": "{\\"tags\\":`+`[\\"`+tags.join([separator = '\\",\\"'])+`\\"]`+`,\\"wrp\\":[\\"`+wrp+`\\"],\\"shm\\":[\\"`+shm+`\\"],\\"usr\\":[\\"`+usr+`\\"]}"
@@ -588,7 +587,7 @@ var data = `{
         "parent_author": "",
         "parent_permlink": "hive-105271",
         "title": "`+posttit.replace(/\"/g,'\\\"')+`",
-        "body": "`+commentbody.replace(/\\n/g,'\\\\n').replace(/\</g,'\\\<').replace(/\>/g,'\\\>').replace(/\"/g,'\\\"').replace(/\[/g,'\\\[').replace(/\]/g,'\\\]').replace(/\{/g,'\\\{').replace(/\}/g,'\\\}')+`",
+        "body": "`+simplemde.value().replace(/\\n/g,'\\\\n').replace(/\</g,'\\\<').replace(/\>/g,'\\\>').replace(/\"/g,'\\\"').replace(/\[/g,'\\\[').replace(/\]/g,'\\\]').replace(/\{/g,'\\\{').replace(/\}/g,'\\\}')+`",
         "author": "`+editauthor+`",
         "permlink": "`+titl+`",
         "json_metadata": "{\\"tags\\":`+`[\\"`+tags.join([separator = '\\",\\"'])+`\\"]`+`,\\"wrp\\":[\\"`+wrp+`\\"],\\"shm\\":[\\"`+shm+`\\"],\\"usr\\":[\\"`+usr+`\\"]}"
