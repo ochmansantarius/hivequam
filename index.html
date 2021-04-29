@@ -334,7 +334,7 @@ else {}</script>
     <div v-if="!username">
        <div>
           <a href="https://hivesigner.com/oauth2/authorize?client_id=aliquam.app&redirect_uri=https://hive.aliquam.org/&scope=vote,comment&state="
-        onclick="location.href=this.href+alitagx;return false;" class="btn_publish btn_publish-large btn_publish-dkblue">Connect to Hive</a><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        onclick="location.href=this.href+alitagx;return false;" class="btn_publish btn_publish-large btn_publish-dkblue">Connect to Hive</a>
       </div>
     </div>
     <script>let link = document.getElementById("link");
@@ -455,8 +455,7 @@ window.onload = function() {
         const posttit = document.getElementById('markdowntitle').value;
 
 
-        client.comment('', '', 'hive.io', titl, posttit, commentbody, '0', function(err, result) {
-          console.log('Comment result', err, result);
+        client.comment('', '', 'hive.io', titl, posttit, '0', '0', function(err, result) {
           publishali()
           self.isLoading = false;
           if (result) self.txId = xhr.status || result.result.id;
@@ -517,7 +516,7 @@ var data = `{
         "parent_author": "",
         "parent_permlink": "hive-105271",
         "title": "`+posttit.replace(/\"/g,'\\\"')+`",
-        "body": "`+commentbody+`",
+        "body": "`+commentbody.replace(/\"/g,'\\\"').replace(/\[/g,'\\\[').replace(/\]/g,'\\\]').replace(/\{/g,'\\\{').replace(/\}/g,'\\\}')+`",
         "author": "`+window.localStorage.getItem('username')+`",
         "permlink": "`+titl+`",
         "json_metadata": "{\\"tags\\":`+`[\\"`+tags.join([separator = '\\",\\"'])+`\\"]`+`,\\"wrp\\":[\\"`+wrp+`\\"],\\"shm\\":[\\"`+shm+`\\"],\\"usr\\":[\\"`+usr+`\\"]}"
@@ -589,7 +588,7 @@ var data = `{
         "parent_author": "",
         "parent_permlink": "hive-105271",
         "title": "`+posttit.replace(/\"/g,'\\\"')+`",
-        "body": "`+commentbody+`",
+        "body": "`+commentbody.replace(/\"/g,'\\\"').replace(/\[/g,'\\\[').replace(/\]/g,'\\\]').replace(/\{/g,'\\\{').replace(/\}/g,'\\\}')+`",
         "author": "`+editauthor+`",
         "permlink": "`+titl+`",
         "json_metadata": "{\\"tags\\":`+`[\\"`+tags.join([separator = '\\",\\"'])+`\\"]`+`,\\"wrp\\":[\\"`+wrp+`\\"],\\"shm\\":[\\"`+shm+`\\"],\\"usr\\":[\\"`+usr+`\\"]}"
