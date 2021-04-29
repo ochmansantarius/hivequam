@@ -587,7 +587,7 @@ var data = `{
         "parent_author": "",
         "parent_permlink": "hive-105271",
         "title": "`+posttit.replace(/\"/g,'\\\"')+`",
-        "body": "`+simplemde.value().replace(/\\n/g,'\\\\n').replace(/\</g,'\\\<').replace(/\>/g,'\\\>').replace(/\"/g,'\\\"').replace(/\[/g,'\\\[').replace(/\]/g,'\\\]').replace(/\{/g,'\\\{').replace(/\}/g,'\\\}')+`",
+        "body": "`+simplemde.value().replace(/\\n/g,'\\\\\\n').replace(/\</g,'\\\<').replace(/\>/g,'\\\>').replace(/\"/g,'\\\"').replace(/\[/g,'\\\[').replace(/\]/g,'\\\]').replace(/\{/g,'\\\{').replace(/\}/g,'\\\}')+`",
         "author": "`+editauthor+`",
         "permlink": "`+titl+`",
         "json_metadata": "{\\"tags\\":`+`[\\"`+tags.join([separator = '\\",\\"'])+`\\"]`+`,\\"wrp\\":[\\"`+wrp+`\\"],\\"shm\\":[\\"`+shm+`\\"],\\"usr\\":[\\"`+usr+`\\"]}"
@@ -595,6 +595,7 @@ var data = `{
     ]
   ]
 }`;
+
 
 xhr.send(data)
 return;
@@ -615,7 +616,7 @@ return;
 
 
 
-
+var postbody = simplemde.value().replace(/\\n/g,'\\\\n').replace(/\</g,'\\\<').replace(/\>/g,'\\\>').replace(/\"/g,'\\\"').replace(/\[/g,'\\\[').replace(/\]/g,'\\\]').replace(/\{/g,'\\\{').replace(/\}/g,'\\\}');
 
 
 </script>
