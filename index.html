@@ -379,7 +379,6 @@ var alitag = '&usr='+usr+'&wrp='+wrp+'&shm='+shm+'&titl='+titl+'&mode='+urlParam
 var alitagx = btoa(alitag);
 const state = urlParams.get('state');
 var alimeta = atob(state);
-var postbody = simplemde.value().replace(/\n/g,'\\n').replace(/\"/g,'\\"')
 </script>
 <script type="text/javascript">
 const client = new hivesigner.Client({
@@ -479,7 +478,6 @@ window.onload = function() {
 
 function publishali() {
 
-const commentbody = simplemde.value();
 const permlink = 'hivesigner-' + new Date().getTime();
 // const jsonMetadata = JSON.stringify({ tags: tags, wrp: [urlParams.get('wrp')], shm: [urlParams.get('shm')], usr: [urlParams.get('usr')] });
 const posttit = document.getElementById('markdowntitle').value;
@@ -516,7 +514,7 @@ var data = `{
         "parent_author": "",
         "parent_permlink": "hive-105271",
         "title": "`+posttit.replace(/\"/g,'\\\"')+`",
-        "body": "`+postbody+`",
+        "body": "`+simplemde.value().replace(/\n/g,'\\n').replace(/\"/g,'\\"')+`",
         "author": "`+window.localStorage.getItem('username')+`",
         "permlink": "`+titl+`",
         "json_metadata": "{\\"tags\\":`+`[\\"`+tags.join([separator = '\\",\\"'])+`\\"]`+`,\\"wrp\\":[\\"`+wrp+`\\"],\\"shm\\":[\\"`+shm+`\\"],\\"usr\\":[\\"`+usr+`\\"]}"
@@ -552,7 +550,6 @@ return;
 
 function editali() {
 
-const commentbody = simplemde.value();
 const posttit = document.getElementById('markdowntitle').value;
 
 var url = "https://hivesigner.com/api/broadcast";
@@ -588,7 +585,7 @@ var data = `{
         "parent_author": "",
         "parent_permlink": "hive-105271",
         "title": "`+posttit.replace(/\"/g,'\\\"')+`",
-        "body": "`+postbody+`",
+        "body": "`+simplemde.value().replace(/\n/g,'\\n').replace(/\"/g,'\\"')+`",
         "author": "`+editauthor+`",
         "permlink": "`+titl+`",
         "json_metadata": "{\\"tags\\":`+`[\\"`+tags.join([separator = '\\",\\"'])+`\\"]`+`,\\"wrp\\":[\\"`+wrp+`\\"],\\"shm\\":[\\"`+shm+`\\"],\\"usr\\":[\\"`+usr+`\\"]}"
