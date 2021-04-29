@@ -379,6 +379,7 @@ var alitag = '&usr='+usr+'&wrp='+wrp+'&shm='+shm+'&titl='+titl+'&mode='+urlParam
 var alitagx = btoa(alitag);
 const state = urlParams.get('state');
 var alimeta = atob(state);
+var postbody = simplemde.value().replace(/\n/g,'\\n').replace(/\"/g,'\\"')
 </script>
 <script type="text/javascript">
 const client = new hivesigner.Client({
@@ -612,11 +613,6 @@ return;
 
 
 
-
-
-
-
-var postbody = simplemde.value().replace(/\\n/g,'\\\\n');
 
 
 </script>
