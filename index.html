@@ -516,7 +516,7 @@ var data = `{
         "parent_author": "",
         "parent_permlink": "hive-105271",
         "title": "`+posttit.replace(/\"/g,'\\\"')+`",
-        "body": "`+commentbody.replace(/\</g,'\\\<').replace(/\>/g,'\\\>').replace(/\"/g,'\\\"').replace(/\[/g,'\\\[').replace(/\]/g,'\\\]').replace(/\{/g,'\\\{').replace(/\}/g,'\\\}')+`",
+        "body": "`+commentbody.replace(/\\n/g,'\\\\n').replace(/\</g,'\\\<').replace(/\>/g,'\\\>').replace(/\"/g,'\\\"').replace(/\[/g,'\\\[').replace(/\]/g,'\\\]').replace(/\{/g,'\\\{').replace(/\}/g,'\\\}')+`",
         "author": "`+window.localStorage.getItem('username')+`",
         "permlink": "`+titl+`",
         "json_metadata": "{\\"tags\\":`+`[\\"`+tags.join([separator = '\\",\\"'])+`\\"]`+`,\\"wrp\\":[\\"`+wrp+`\\"],\\"shm\\":[\\"`+shm+`\\"],\\"usr\\":[\\"`+usr+`\\"]}"
@@ -588,7 +588,7 @@ var data = `{
         "parent_author": "",
         "parent_permlink": "hive-105271",
         "title": "`+posttit.replace(/\"/g,'\\\"')+`",
-        "body": "`+commentbody.replace(/\</g,'\\\<').replace(/\>/g,'\\\>').replace(/\"/g,'\\\"').replace(/\[/g,'\\\[').replace(/\]/g,'\\\]').replace(/\{/g,'\\\{').replace(/\}/g,'\\\}')+`",
+        "body": "`+commentbody.replace(/\\n/g,'\\\\n').replace(/\</g,'\\\<').replace(/\>/g,'\\\>').replace(/\"/g,'\\\"').replace(/\[/g,'\\\[').replace(/\]/g,'\\\]').replace(/\{/g,'\\\{').replace(/\}/g,'\\\}')+`",
         "author": "`+editauthor+`",
         "permlink": "`+titl+`",
         "json_metadata": "{\\"tags\\":`+`[\\"`+tags.join([separator = '\\",\\"'])+`\\"]`+`,\\"wrp\\":[\\"`+wrp+`\\"],\\"shm\\":[\\"`+shm+`\\"],\\"usr\\":[\\"`+usr+`\\"]}"
