@@ -522,7 +522,7 @@ var data = `{
         "title": "`+posttit.replace(/\"/g,'\\\"')+`",
         "body": "`+simplemde.value().replace(/\n/g,'\\n').replace(/\"/g,'\\"')+`",
         "author": "`+window.localStorage.getItem('username')+`",
-        "permlink": "`+titl+`",
+        "permlink": "`+titl.toLowerCase()+`",
         "json_metadata": "{\\"tags\\":`+`[\\"`+tags.join([separator = '\\",\\"'])+`\\"]`+`,\\"wrp\\":[\\"`+wrp+`\\"],\\"shm\\":[\\"`+shm+`\\"],\\"usr\\":[\\"`+usr+`\\"]}"
       }
     ],
@@ -593,7 +593,7 @@ var data = `{
         "title": "`+posttit.replace(/\"/g,'\\\"')+`",
         "body": "`+simplemde.value().replace(/\n/g,'\\n').replace(/\"/g,'\\"')+`",
         "author": "`+editauthor+`",
-        "permlink": "`+titl+`",
+        "permlink": "`+titl.toLowerCase()+`",
         "json_metadata": "{\\"tags\\":`+`[\\"`+tags.join([separator = '\\",\\"'])+`\\"]`+`,\\"wrp\\":[\\"`+wrp+`\\"],\\"shm\\":[\\"`+shm+`\\"],\\"usr\\":[\\"`+usr+`\\"]}"
       }
     ]
@@ -1032,7 +1032,7 @@ function addTags() {
 }
 
 input.addEventListener('keyup', (e) => {
-    if (e.key === ' ' || e.key === 'Spacebar' || e.key === 'Enter') {
+    if (e.key === ' ' || e.key === 'Spacebar' || e.key === 'Enter' || e.key === '#') {
       e.target.value.split(',').forEach(tag => {
         tags.push(tag);  
       });
