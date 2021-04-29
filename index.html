@@ -328,14 +328,20 @@ else {}</script>
             <script>
                 var val = btoa('usr='+urlParams.get('usr')+'&wrp='+urlParams.get('wrp')+'&shm='+urlParams.get('shm')+'&tltl='+urlParams.get('titl'));
             </script>
-<div id="main" v-cloak>
+<div id="main" v-cloak style="margin: auto; width: 50%; border: 0px solid gray; padding: 20px;">
   <p v-if="!isInit">Loading...</p>
   <div v-else>
     <div v-if="!username">
        <div>
+        <h2>To post, authorize your account by clicking on this button:</h2><br>
           <a href="https://hivesigner.com/oauth2/authorize?client_id=aliquam.app&redirect_uri=https://hive.aliquam.org/&scope=vote,comment&state="
         onclick="location.href=this.href+alitagx;return false;" class="btn_publish btn_publish-large btn_publish-dkblue">Connect to Hive</a>
+        <br>
+        <br>
+        If you don't have a Hive account, create it by clicking here:<br>
+        <a href="https://ecency.com/signup" target="_blank">Create a hive account</a>
       </div>
+      <br><br><br><br><br><br><br><br><br><br><br><br>
     </div>
     <script>let link = document.getElementById("link");
 link.href = btoa(urlparameters);</script>
