@@ -358,11 +358,11 @@ link.href = btoa(urlparameters);</script>
           Publish
         </button>
       </div>
-<br><br>      <input id="seriescheckbox" name="seriescheckbox" type="checkbox" onclick="showseriesoptions()"/>Add to series* (optional)
+<br><br>      <input id="seriescheckbox" name="seriescheckbox" type="checkbox" onclick="showseriesoptions()"/>Add to series (optional)
 
-<div class="select" id="seriesbox" style="display:none"><select id="seltoseries" onchange="posttoupdate()"></select><br>
-*Select the last post in a series or a new post to create a series</div>
-<br><br>
+<div class="select" id="seriesbox" style="display:none"><select id="seltoseries" onchange="posttoupdate()"></select></div>
+<br>*Select the last post in a series or a new post to create a series
+<br>
       <div v-if="txId" class="flash flash-success mb-2">
         <p>
           The transaction has been broadcasted, here is the tx id:
