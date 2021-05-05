@@ -8,6 +8,7 @@
   <script src="https://unpkg.com/hivesigner@latest/lib/hivesigner.min.js"></script>
   <!-- <script src="https://cdn.jsdelivr.net/npm/hivesigner@3.1.7"></script> -->
   <!-- <script src="../dist/hivesigner.min.js"></script> -->
+  <script SRC="../javascript/diff_match_patch.js"></script>
 </head>
     <script>
       new Vue({
@@ -386,7 +387,7 @@ var alitagx = btoa(alitag);
 const state = urlParams.get('state');
 var alimeta = atob(state);
 </script>
-<script type="text/javascript" SRC="../javascript/diff_match_patch.js">
+<script type="text/javascript">
 const client = new hivesigner.Client({
   app: 'aliquam.app',
   callbackURL: 'localhost:2700/',
@@ -481,6 +482,8 @@ window.onload = function() {
   });
 };
 
+var patch_text = '';
+
 function publishali() {
 
 const permlink = 'hivesigner-' + new Date().getTime();
@@ -561,7 +564,7 @@ var data = `{
 xhr.send(data)
 return;
 }  
-var patch_text = '';
+
 function editali() {
 
 var dmp = new diff_match_patch();
