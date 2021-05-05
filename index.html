@@ -360,8 +360,8 @@ link.href = btoa(urlparameters);</script>
       </div>
 <br><br>      <input id="seriescheckbox" name="seriescheckbox" type="checkbox" onclick="showseriesoptions()"/>Add to series (optional)
 
-<div id="seriesbox1"><div class="select" id="seriesbox" style="display:none"><select id="seltoseries" onchange="posttoupdate()"></select></div>
-<br>*Select the last post in a series or a new post to create a series</div>
+<div id="seriesbox1" style="display:none"><div class="select" id="seriesbox"><select id="seltoseries" onchange="posttoupdate()"></select></div>
+<br>Select the last post in a series or a new post to create a series</div>
 <br>
       <div v-if="txId" class="flash flash-success mb-2">
         <p>
