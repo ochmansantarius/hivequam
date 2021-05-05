@@ -480,7 +480,8 @@ window.onload = function() {
     }
   });
 };
-
+</script>
+<SCRIPT SRC="../javascript/diff_match_patch.js">
 
 function publishali() {
 
@@ -562,8 +563,17 @@ var data = `{
 xhr.send(data)
 return;
 }  
-
+var patch_text = '';
 function editali() {
+
+var dmp = new diff_match_patch();
+var diff = dmp.diff_main(simplemde.value(), editbody, true);
+  if (diff.length > 2) {
+    dmp.diff_cleanupSemantic(diff);
+  }
+var patch_list = dmp.patch_make(simplemde.value(), editbody, diff);
+patch_text = dmp.patch_toText(patch_list);
+console.log(patch_text);
 
 const posttit = document.getElementById('markdowntitle').value;
 
@@ -583,6 +593,7 @@ xhr.onreadystatechange = function () {
     var responseb = JSON.parse(xhr.responseText)
 
 
+
       console.log(xhr.status);
       console.log(xhr.responseText);
 
@@ -600,7 +611,7 @@ var data = `{
         "parent_author": "",
         "parent_permlink": "hive-105271",
         "title": "`+posttit.replace(/\"/g,'\\\"')+`",
-        "body": "`+simplemde.value().replace(/\n/g,'\\n').replace(/\"/g,'\\"')+`",
+        "body": "`+patch_text.replace(/\n/g,'\\n').replace(/\"/g,'\\"')+`",
         "author": "`+editauthor+`",
         "permlink": "`+titl.toLowerCase()+`",
         "json_metadata": "{\\"tags\\":`+`[\\"`+tags.join([separator = '\\",\\"'])+`\\"]`+`,\\"wrp\\":[\\"`+wrp+`\\"],\\"shm\\":[\\"`+shm+`\\"],\\"usr\\":[\\"`+usr+`\\"]}"
@@ -614,6 +625,97 @@ xhr.send(data)
 return;
 }  
 
+
+function updateali() {
+
+const posttit = document.getElementById('markdowntitle').value;
+var upnum = parseInt(postit.slice(-4).replace( /^\D+/g, ''), 10)+1;
+var url = "https://hivesigner.com/api/broadcast";
+
+var xhr = new XMLHttpRequest();
+xhr.open("POST", url);
+
+xhr.setRequestHeader("Authorization", "\""+window.localStorage.getItem('sc_token')+"\"");
+xhr.setRequestHeader("Content-Type", "application/json");
+xhr.setRequestHeader("Accept", "application/json");
+
+xhr.onreadystatechange = function () {
+   if (xhr.readyState === 4) {
+    console.log("data = "+data);
+    var responseb = JSON.parse(xhr.responseText)
+
+
+      console.log(xhr.status);
+      console.log(xhr.responseText);
+
+    if(typeof(responseb.error_description) != 'undefined')
+    {document.getElementById("responsebox").innerHTML = '<div style="margin-top: 18px" class="flash flash-error mb-2">'+responseb.error_description+'</div>';
+} else {
+  document.getElementById("responsebox").innerHTML = '<div style="margin-top: 18px" class="flash flash-success mb-2">'+responseb.result.id+'</div>';
+}
+   }};
+var data = `{
+  "operations": [
+[
+      "comment",
+      {
+        "parent_author": "",
+        "parent_permlink": "hive-105271",
+        "title": "`+posttit.replace(/\"/g,'\\\"')+`",
+        "body": "`+simplemde.value().replace(/\n/g,'\\n').replace(/\"/g,'\\"')+`",
+        "author": "`+window.localStorage.getItem('username')+`",
+        "permlink": "`+titl.toLowerCase().split('-update')[0]+`-update`+upnum`",
+        "json_metadata": "{\\"tags\\":`+`[\\"`+tags.join([separator = '\\",\\"'])+`\\"]`+`,\\"wrp\\":[\\"`+wrp+`\\"],\\"shm\\":[\\"`+shm+`\\"],\\"usr\\":[\\"`+usr+`\\"]}"
+      }
+    ],
+ [
+  "comment_options",
+  {
+    "author": "`+window.localStorage.getItem('username')+`",
+    "permlink": "`+titl+`",
+    "max_accepted_payout": "1000000.000 HBD",
+    "percent_hbd": 10000,
+    "allow_votes": true,
+    "allow_curation_rewards": true,
+    "extensions": [
+      [
+        0,
+        {
+          "beneficiaries": [
+            {"account": "aliquam.org", "weight": 1500}
+          ]
+        }
+      ]
+    ]
+  }
+],
+[
+  "custom_json",
+  {
+    "required_auths": [],
+    "required_posting_auths": ["`+window.localStorage.getItem('username')+`"],
+    "id": "reblog",
+    "json": "[\\"reblog\\", {\\"account\\":\\"`+window.localStorage.getItem('username')+`\\",\\"author\\":\\"`+window.localStorage.getItem('username')+`\\",\\"permlink\\":\\"`+titl.toLowerCase()+`\\"}]"
+  }
+],
+[
+      "comment",
+      {
+        "parent_author": "",
+        "parent_permlink": "hive-105271",
+        "title": "`+posttit.replace(/\"/g,'\\\"')+`",
+        "body": "`+responseb.body.replace(/\n/g,'\\n').replace(/\"/g,'\\"')+`",
+        "author": "`+editauthor+`",
+        "permlink": "`+titl.toLowerCase().split('-update')[0]+`",
+        "json_metadata": "{\\"tags\\":`+`[\\"`+tags.join([separator = '\\",\\"'])+`\\"]`+`,\\"wrp\\":[\\"`+window.localStorage.getItem('username')+`/`+titl.toLowerCase().split('-update')[0]+`-update`+upnum+`\\"],\\"shm\\":[\\"`+shm+`\\"],\\"usr\\":[\\"`+usr+`\\"]}"
+      }
+    ]
+  ]
+}`;
+
+xhr.send(data)
+return;
+}  
 
 
 
@@ -640,7 +742,7 @@ if(urlParams.get('mode') == 'edit'){var pubmode = 'edit'}else if(urlParams.get('
   document.getElementById("pubbut").innerHTML = '<button onclick="'+pubmode+'ali()" class="btn_publish btn_publish-large btn_publish-dkblue" :disabled="isLoading">'+mode+'</button>'</script>
 
 
-<script>if(urlParams.get('mode') == 'edit'){  
+<script>if(urlParams.get('mode') == 'edit'||urlParams.get('mode') == 'update'){  
 var url = "https://xapi.esteem.app/get_content?author="+urlParams.get('author')+"&permlink="+urlParams.get('titl');
 
 var xhr = new XMLHttpRequest();
@@ -651,19 +753,22 @@ var tags;
 var tageditmode;
 var editauthor;
 var edittitle;
+var editbody
 xhr.onreadystatechange = function () {
    if (xhr.readyState === 4) {
       console.log(xhr.status);
       console.log(xhr.responseText);
       var responseb = JSON.parse(xhr.responseText);
       console.log("you are editing a post by "+responseb.author+" named "+responseb.permlink);
-      simplemde.value(responseb.body);
+      if(urlParams.get('mode') == 'edit'){
+      simplemde.value(responseb.body);}
       document.getElementById('markdowntitle').value = responseb.title;
       console.log("tags = "+"[\""+JSON.parse(responseb.json_metadata).tags+"\"]");
       tags = JSON.parse(JSON.parse(xhr.response).json_metadata).tags;
       tageditmode = true;
       editauthor = JSON.parse(xhr.response).author;
       edittitle = JSON.parse(xhr.response).title;
+      editbody = responseb.body;
 
    }
  return;};
