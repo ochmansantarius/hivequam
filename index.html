@@ -348,6 +348,9 @@ else {}</script>
 link.href = btoa(urlparameters);</script>
 
     <div v-if="username">
+      <input id="seriescheckbox" name="seriescheckbox" type="checkbox" onclick="showseriesoptions()"/>Add to series (optional)
+
+<div class="select" id="seriesbox" style="display:none"><select id="seltoseries" onchange="posttoupdate()"></select></div>
       <p class="mb-4">
         You are connected to your Hive account: <b>{{username}}</b>
         <a href="https://hive.aliquam.org/?" onclick="location.href=this.href+alitag;return false;" @click="logout" >logout</a>
@@ -778,6 +781,27 @@ xhr.onreadystatechange = function () {
 
 xhr.send();}
 </script>
+
+<script>
+  
+function posttoupdate(){var url = "https://xapi.esteem.app/get_content?author="+urlParams.get('author')+"&permlink="+document.getElementById("seltoseries").options[e.selectedIndex].text;
+
+var xhr = new XMLHttpRequest();
+xhr.open("GET", url);
+
+xhr.setRequestHeader("Accept", "application/json");
+xhr.onreadystatechange = function () {
+   if (xhr.readyState === 4) {
+      console.log(xhr.status);
+      console.log(xhr.responseText);
+
+
+}
+ return;};
+
+xhr.send();}
+</script>
+
 
 <style type="text/css">
 #main {
@@ -1228,3 +1252,196 @@ input.focus();
 <!-- end: task_image --><!-- End task image code -->
 
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+function showseriesoptions() {
+  var serb = document.getElementById("seriesbox");
+  if (serb.style.display === "block") {
+    serb.style.display = "none";
+  } else {
+    serb.style.display = "block";
+  }
+}
+</script>
+
+<script>
+
+var url = "https://api.hive.blog";
+
+var xhr = new XMLHttpRequest();
+xhr.open("POST", url);
+
+xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+var seriesroot;
+xhr.onreadystatechange = function () {
+   if (xhr.readyState === 4) {
+      console.log(xhr.status);
+      console.log(xhr.responseText);
+      seriesroot=JSON.parse(xhr.responseText);
+      function printElt(element, index, array) {
+if(JSON.parse(element.json_metadata).wrp && JSON.parse(element.json_metadata).wrp.toString().length>80){
+
+  var addbox1 = document.getElementById("seltoseries");
+  var option = document.createElement("option");
+  option.text = element.permlink;
+  addbox1.add(option);
+
+
+
+  console.log(element.permlink+" "+JSON.parse(element.json_metadata).wrp.toString().length)}
+}
+seriesroot.result.forEach(printElt);
+   }};
+
+var data = '{"jsonrpc":"2.0", "method":"condenser_api.get_discussions_by_author_before_date", "params":["santarius2","","",100], "id":1}';
+
+xhr.send(data);
+
+
+
+</script>
+
+
+
+
+<script>
+  
+function posttoupdate(){var url = "https://xapi.esteem.app/get_content?author=santarius2&permlink="+document.getElementById("seltoseries").options[document.getElementById("seltoseries").selectedIndex].text;
+
+var xhr = new XMLHttpRequest();
+xhr.open("GET", url);
+
+xhr.setRequestHeader("Accept", "application/json");
+xhr.onreadystatechange = function () {
+   if (xhr.readyState === 4) {
+      console.log(xhr.status);
+
+
+}
+ return;};
+
+xhr.send();}
+</script>
+
+
+
+
+
+
+
+
+
+<br><br>
+
+
+<style>
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --select-border: #777;
+  --select-focus: blue;
+  --select-arrow: var(--select-border);
+}
+
+select {
+  // A reset of styles, including removing the default dropdown arrow
+  appearance: none;
+  background-color: transparent;
+  border: none;
+  padding: 0 1em 0 0;
+  margin: 0;
+  width: 100%;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: inherit;
+  line-height: inherit;
+
+  // Stack above custom arrow
+  z-index: 1;
+
+  // Remove dropdown arrow in IE10 & IE11
+  // @link https://www.filamentgroup.com/lab/select-css.html
+  &::-ms-expand {
+    display: none;
+  }
+
+  // Remove focus outline, will add on alternate element
+  outline: none;
+}
+
+.select {
+  display: grid;
+  grid-template-areas: "select";
+  align-items: center;
+  position: relative;
+
+  select,
+  &::after {
+    grid-area: select;
+  }
+
+  min-width: 15ch;
+  max-width: 30ch;
+
+  border: 1px solid var(--select-border);
+  border-radius: 0.25em;
+  padding: 0.25em 0.5em;
+
+  font-size: 1.25rem;
+  cursor: pointer;
+  line-height: 1.1;
+
+  // Optional styles
+  // remove for transparency
+  background-color: #fff;
+  background-image: linear-gradient(to top, #f9f9f9, #fff 33%);
+  }
+}
+
+
+label {
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+.select + label {
+  margin-top: 2rem;
+}
+
+</style>
