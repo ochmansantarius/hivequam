@@ -279,6 +279,11 @@ Especially if this is your first post on Hive, it's a good idea to say something
 <h6 style="color: gray"><center>If you write in a language other than english, it is worth using a language tag such as "polish" or "spanish". <br>
 
 Hive blockchain has many voters for non-English posts.</center></h6>
+<br>
+<br>
+      <input id="seriescheckbox" name="seriescheckbox" type="checkbox" onclick="showseriesoptions()"/>Add to series (optional)
+
+<div class="select" id="seriesbox" style="display:none"><select id="seltoseries" onchange="posttoupdate()"></select></div>
   
 </div>
     </div>
@@ -348,9 +353,6 @@ else {}</script>
 link.href = btoa(urlparameters);</script>
 
     <div v-if="username">
-      <input id="seriescheckbox" name="seriescheckbox" type="checkbox" onclick="showseriesoptions()"/>Add to series (optional)
-
-<div class="select" id="seriesbox" style="display:none"><select id="seltoseries" onchange="posttoupdate()"></select></div>
       <p class="mb-4">
         You are connected to your Hive account: <b>{{username}}</b>
         <a href="https://hive.aliquam.org/?" onclick="location.href=this.href+alitag;return false;" @click="logout" >logout</a>
