@@ -279,9 +279,7 @@ Especially if this is your first post on Hive, it's a good idea to say something
 <h6 style="color: gray"><center>If you write in a language other than english, it is worth using a language tag such as "polish" or "spanish". <br>
 
 Hive blockchain has many voters for non-English posts.</center></h6>
-
-<div class="select" id="seriesbox" style="display:none"><select id="seltoseries" onchange="posttoupdate()"></select></div>
-  
+ 
 </div>
     </div>
     <div class="bigcolumn3"><div class="slide-in from-right">
@@ -359,9 +357,12 @@ link.href = btoa(urlparameters);</script>
         <button @click="comment" class="btn_publish btn_publish-large btn_publish-dkblue" :disabled="isLoading">
           Publish
         </button>
-        <br><br>
-      <input id="seriescheckbox" name="seriescheckbox" type="checkbox" onclick="showseriesoptions()"/> Add to series (optional)
       </div>
+<br><br>      <input id="seriescheckbox" name="seriescheckbox" type="checkbox" onclick="showseriesoptions()"/>Add to series* (optional)
+
+<div class="select" id="seriesbox" style="display:none"><select id="seltoseries" onchange="posttoupdate()"></select><br>
+*Select the last post in a series or a new post to create a series</div>
+<br><br>
       <div v-if="txId" class="flash flash-success mb-2">
         <p>
           The transaction has been broadcasted, here is the tx id:
