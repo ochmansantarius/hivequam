@@ -1327,7 +1327,7 @@ if(JSON.parse(element.json_metadata).wrp && JSON.parse(element.json_metadata).wr
 seriesroot.result.forEach(printElt);
    }};
 
-var data = '{"jsonrpc":"2.0", "method":"condenser_api.get_discussions_by_author_before_date", "params":["santarius2","","",100], "id":1}';
+var data = '{"jsonrpc":"2.0", "method":"condenser_api.get_discussions_by_author_before_date", "params":["'+window.localStorage.getItem('username')+'","","",100], "id":1}';
 
 xhr.send(data);
 
@@ -1340,7 +1340,7 @@ xhr.send(data);
 
 <script>
   
-function posttoupdate(){var url = "https://xapi.esteem.app/get_content?author=santarius2&permlink="+document.getElementById("seltoseries").options[document.getElementById("seltoseries").selectedIndex].text;
+function posttoupdate(){var url = "https://xapi.esteem.app/get_content?author="+window.localStorage.getItem('username')+"&permlink="+document.getElementById("seltoseries").options[document.getElementById("seltoseries").selectedIndex].text;
 
 var xhr = new XMLHttpRequest();
 xhr.open("GET", url);
