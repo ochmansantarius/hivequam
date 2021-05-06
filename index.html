@@ -358,9 +358,10 @@ link.href = btoa(urlparameters);</script>
           Publish
         </button>
       </div>
-<br><br>      <input id="seriescheckbox" name="seriescheckbox" type="checkbox" onclick="showseriesoptions()"/>Add to series (optional)
+<br><br>      <div id="divwithcheckbox" style="display:none"><input id="seriescheckbox" name="seriescheckbox" type="checkbox" onclick="showseriesoptions();ggg()"/>&nbsp;Add to series (optional)</div>
 
-<div id="seriesbox1" style="display:none"><div class="select" id="seriesbox"><select id="seltoseries" onchange="posttoupdate()"></select></div>
+<div id="seriesbox1" style="display:none"><div class="select" id="seriesbox"><select id="seltoseries" onchange="posttoseriesup()"><option value="none" disabled selected hidden>Select post...
+</option></select></div>
 <br>Select the last post in a series or a new post to create a series</div>
 <br>
       <div v-if="txId" class="flash flash-success mb-2">
@@ -490,9 +491,22 @@ window.onload = function() {
 var patch_text = '';
 
 function publishali() {
+var optionalseries = ""
 
-const permlink = 'hivesigner-' + new Date().getTime();
-// const jsonMetadata = JSON.stringify({ tags: tags, wrp: [urlParams.get('wrp')], shm: [urlParams.get('shm')], usr: [urlParams.get('usr')] });
+if(seriesresponsejson){var optionalseries=`,[
+      "comment",
+      {
+        "parent_author": "",
+        "parent_permlink": "hive-105271",
+        "title": "`+seriesresponsejson.title.replace(/\"/g,'\\\"')+`",
+        "body": "`+prevseriesbody.replace(/\n/g,'\\n').replace(/\"/g,'\\"')+`",
+        "author": "`+seriesresponsejson.author+`",
+        "permlink": "`+seriesresponsejson.permlink+`",
+        "json_metadata": "`+seriesresponsejson.json_metadata.replace(/\"/g,'\\\"')+`"
+      }
+    ]`
+  }
+
 const posttit = document.getElementById('markdowntitle').value;
 
 var url = "https://hivesigner.com/api/broadcast";
@@ -508,8 +522,6 @@ xhr.onreadystatechange = function () {
    if (xhr.readyState === 4) {
     console.log("data = "+data);
     var responseb = JSON.parse(xhr.responseText)
-
-
       console.log(xhr.status);
       console.log(xhr.responseText);
 
@@ -527,7 +539,7 @@ var data = `{
         "parent_author": "",
         "parent_permlink": "hive-105271",
         "title": "`+posttit.replace(/\"/g,'\\\"')+`",
-        "body": "`+simplemde.value().replace(/\n/g,'\\n').replace(/\"/g,'\\"')+`",
+        "body": "`+(simplemde.value()+seriessignature).replace(/\n/g,'\\n').replace(/\"/g,'\\"')+`",
         "author": "`+window.localStorage.getItem('username')+`",
         "permlink": "`+titl.toLowerCase()+`",
         "json_metadata": "{\\"tags\\":`+`[\\"`+tags.join([separator = '\\",\\"'])+`\\"]`+`,\\"wrp\\":[\\"`+wrp+`\\"],\\"shm\\":[\\"`+shm+`\\"],\\"usr\\":[\\"`+usr+`\\"]}"
@@ -562,7 +574,7 @@ var data = `{
     "id": "reblog",
     "json": "[\\"reblog\\", {\\"account\\":\\"`+window.localStorage.getItem('username')+`\\",\\"author\\":\\"`+window.localStorage.getItem('username')+`\\",\\"permlink\\":\\"`+titl.toLowerCase()+`\\"}]"
   }
-]
+]`+optionalseries+`
   ]
 }`;
 
@@ -780,26 +792,6 @@ xhr.onreadystatechange = function () {
    }
  return;};
 
-
-xhr.send();}
-</script>
-
-<script>
-  
-function posttoupdate(){var url = "https://xapi.esteem.app/get_content?author="+urlParams.get('author')+"&permlink="+document.getElementById("seltoseries").options[e.selectedIndex].text;
-
-var xhr = new XMLHttpRequest();
-xhr.open("GET", url);
-
-xhr.setRequestHeader("Accept", "application/json");
-xhr.onreadystatechange = function () {
-   if (xhr.readyState === 4) {
-      console.log(xhr.status);
-      console.log(xhr.responseText);
-
-
-}
- return;};
 
 xhr.send();}
 </script>
@@ -1299,37 +1291,54 @@ function showseriesoptions() {
 </script>
 
 <script>
-
-var url = "https://api.hive.blog";
+var seriesroot;
+var stopfil;
+function ggg(){if (stopfil!=1){var url = "https://api.hive.blog";
 
 var xhr = new XMLHttpRequest();
 xhr.open("POST", url);
 
 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-var seriesroot;
 xhr.onreadystatechange = function () {
    if (xhr.readyState === 4) {
       console.log(xhr.status);
       console.log(xhr.responseText);
       seriesroot=JSON.parse(xhr.responseText);
       function printElt(element, index, array) {
-if(JSON.parse(element.json_metadata).wrp && JSON.parse(element.json_metadata).wrp.toString().length>80){
+if(JSON.parse(element.json_metadata).wrp && JSON.parse(element.json_metadata).wrp.toString().length>80 && element.body.split('<serieslast>')[1]){
 
   var addbox1 = document.getElementById("seltoseries");
   var option = document.createElement("option");
-  option.text = element.permlink;
+  option.text = element.permlink.charAt(0).toUpperCase()+element.permlink.slice(1)+` (`+element.body.split('<seriesname>')[1].charAt(0).toUpperCase()+element.body.split('<seriesname>')[1].slice(1)+`)`;
+  option.style="background-color:#ABBAEA"
+  option.value=element.permlink;
   addbox1.add(option);
 
 
 
   console.log(element.permlink+" "+JSON.parse(element.json_metadata).wrp.toString().length)}
 }
+function printEltnew(element, index, array) {
+if(JSON.parse(element.json_metadata).wrp && JSON.parse(element.json_metadata).wrp.toString().length>80 && !element.body.split('<serieslast>')[1]){
+
+  var addbox1 = document.getElementById("seltoseries");
+  var option = document.createElement("option");
+  option.text = element.permlink.charAt(0).toUpperCase()+element.permlink.slice(1);
+  option.value=element.permlink;
+  addbox1.add(option);
+
+
+
+  console.log(element.permlink+" "+JSON.parse(element.json_metadata).wrp.toString().length)}
+  stopfil=1
+}
 seriesroot.result.forEach(printElt);
+seriesroot.result.forEach(printEltnew);
    }};
 
 var data = '{"jsonrpc":"2.0", "method":"condenser_api.get_discussions_by_author_before_date", "params":["'+window.localStorage.getItem('username')+'","","",100], "id":1}';
 
-xhr.send(data);
+xhr.send(data);}}
 
 
 
@@ -1339,8 +1348,12 @@ xhr.send(data);
 
 
 <script>
-  
-function posttoupdate(){var url = "https://xapi.esteem.app/get_content?author="+window.localStorage.getItem('username')+"&permlink="+document.getElementById("seltoseries").options[document.getElementById("seltoseries").selectedIndex].text;
+var seriesresponsejson;
+var createdseriesname;
+var prevseriesbody;
+var seriessignature="";
+var prevsignature;
+function posttoseriesup(){var url = "https://xapi.esteem.app/get_content?author="+window.localStorage.getItem('username')+"&permlink="+document.getElementById("seltoseries").options[document.getElementById("seltoseries").selectedIndex].value;
 
 var xhr = new XMLHttpRequest();
 xhr.open("GET", url);
@@ -1349,13 +1362,92 @@ xhr.setRequestHeader("Accept", "application/json");
 xhr.onreadystatechange = function () {
    if (xhr.readyState === 4) {
       console.log(xhr.status);
+      seriesresponsejson=JSON.parse(xhr.response)
+      if (seriesresponsejson.body.split('<seriesname>')[1]){createdseriesname=seriesresponsejson.body.split('<seriesname>')[1]} else {createdseriesname = prompt("Please enter new series name:", "").replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, '');}
+      if (seriesresponsejson.body.split('<serieslast>')[1]){
+        seriessignature=`
 
+        -----------
+<serieslast><center><h4>Too see this building on the Aliquam.org Minecraft Server, type:</h4></center><center>\`/hive open `+seriesresponsejson.author+` `+titl+`\`</center>
+
+<prevlink>
+<div class"pull-left"><a href="https://peakd.com/`+seriesresponsejson.url+`"><img src="https://images.hive.blog/140x240/https://i.imgur.com/hJyofvg.png"></a></div>
+<prevlink>
+<nextlink>
+<div class"pull-right"><img src="https://images.hive.blog/140x240/https://i.imgur.com/xIIyvOn.png"></div>
+<nextlink>
+
+<center>This is post #<sernum>`+(parseInt(seriesresponsejson.body.split('<sernum>')[1])+1)+`<sernum> on the <seriesurl>[<seriesname>`+createdseriesname+`<seriesname>](`+seriesresponsejson.body.split('<seriesurl>')[1].split('(')[1].split(')')[0]+`)<seriesurl> series published by the Hivequam Minecraft Plugin. See others here.</center><serieslast>`
+
+        prevsignature=`
+
+        -----------
+<serieslast><center><h4>Too see this building on the Aliquam.org Minecraft Server, type:</h4></center><center>\`/hive open `+seriesresponsejson.author+` `+seriesresponsejson.permlink+`\`</center>
+
+<prevlink>`+seriesresponsejson.body.split('<serieslast>')[1]+`<prevlink>
+<nextlink>
+<div class"pull-right"><a href="https://peakd.com/hive-105271/@`+seriesresponsejson.author+`/`+titl+`"><img src="https://images.hive.blog/140x240/https://i.imgur.com/nBZlEM7.png"></a></div>
+<nextlink>
+
+<center>This is post #<sernum>`+seriesresponsejson.body.split('<sernum>')[1]+`<sernum> on the <seriesurl>[<seriesname>`+seriesresponsejson.body.split('<seriesname>')[1]+`<seriesname>](`+seriesresponsejson.body.split('<seriesurl>')[1].split('(')[1].split(')')[0]+`)<seriesurl> series published by the Hivequam Minecraft Plugin. See others here.</center><serieslast>`
+      var dmp = new diff_match_patch();
+      var diff = dmp.diff_main(seriesresponsejson.body,seriesresponsejson.body+prevsignature, true);
+        if (diff.length > 2) {
+          dmp.diff_cleanupSemantic(diff);
+        }
+      var patch_list = dmp.patch_make(seriesresponsejson.body, seriesresponsejson.body+prevsignature, diff);
+      prevseriesbody = dmp.patch_toText(patch_list);
+      console.log("prevseriesbody = "+prevseriesbody);
+
+
+      }else{
+        seriessignature=`
+
+        -----------
+<serieslast><center><h4>Too see this building on the Aliquam.org Minecraft Server, type:</h4></center><center>\`/hive open `+usern+` `+titl+`\`</center>
+
+<prevlink>
+<div class"pull-left"><a href="https://peakd.com`+seriesresponsejson.url+`"><img src="https://images.hive.blog/140x240/https://i.imgur.com/hJyofvg.png"></a></div>
+<prevlink>
+<nextlink>
+<div class"pull-right"><img src="https://images.hive.blog/140x240/https://i.imgur.com/xIIyvOn.png"></div>
+<nextlink>
+
+<center>This is post #<sernum>2<sernum> on the <seriesurl>[<seriesname>`+createdseriesname+`<seriesname>](https://peakd.com`+seriesresponsejson.url+`)<seriesurl> series published by the Hivequam Minecraft Plugin. See others here.</center><serieslast>
+`
+
+        prevsignature=`
+        
+        -----------
+<serieslast><center><h4>Too see this building on the Aliquam.org Minecraft Server, type:</h4></center><center>\`/hive open `+seriesresponsejson.author+` `+seriesresponsejson.permlink+`\`</center>
+
+<prevlink>
+<div class"pull-left"><img src="https://images.hive.blog/140x240/https://i.imgur.com/xIIyvOn.png"></div>
+<prevlink>
+<nextlink>
+<div class"pull-right"><a href="https://peakd.com/hive-105271/`+seriesresponsejson.author+`/`+titl+`"><img src="https://images.hive.blog/140x240/https://i.imgur.com/nBZlEM7.png"></a></div>
+<nextlink>
+
+<center>This is post #<sernum>1<sernum> on the <seriesurl>[<seriesname>`+createdseriesname+`<seriesname>](https://peakd.com`+seriesresponsejson.url+`)<seriesurl> series published by the Hivequam Minecraft Plugin. See others here.</center><serieslast>`
+
+      var dmp = new diff_match_patch();
+      var diff = dmp.diff_main(seriesresponsejson.body,seriesresponsejson.body+prevsignature, true);
+        if (diff.length > 2) {
+          dmp.diff_cleanupSemantic(diff);
+        }
+      var patch_list = dmp.patch_make(seriesresponsejson.body, seriesresponsejson.body+prevsignature, diff);
+      prevseriesbody = dmp.patch_toText(patch_list);
+      console.log("prevseriesbody = "+prevseriesbody);
+
+
+      }
 
 }
  return;};
 
 xhr.send();}
 </script>
+
 
 
 <style>
@@ -1437,3 +1529,5 @@ label {
 }
 
 </style>
+
+<script>if(urlParams.get('mode')==null||urlParams.get('mode')=="publish"){document.getElementById("divwithcheckbox").style.display = ""}</script>
