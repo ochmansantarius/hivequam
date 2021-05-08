@@ -487,21 +487,6 @@ window.onload = function() {
 var patch_text = '';
 
 function publishali(){
-var optionalseries = ""
-
-if(seriesresponsejson){var optionalseries=`[
-      "comment",
-      {
-        "parent_author": "",
-        "parent_permlink": "hive-105271",
-        "title": "`+seriesresponsejson.title.replace(/\"/g,'\\\"')+`",
-        "body": "`+prevseriesbody.replace(/\n/g,'\\n').replace(/\"/g,'\\"')+`",
-        "author": "`+seriesresponsejson.author+`",
-        "permlink": "`+seriesresponsejson.permlink+`",
-        "json_metadata": "`+seriesresponsejson.json_metadata.replace(/\"/g,'\\\"')+`"
-      }
-    ]`
-  }
 
 const posttit = document.getElementById('markdowntitle').value;
 
@@ -522,8 +507,10 @@ xhr.onreadystatechange = function () {
       console.log(xhr.responseText);
           if(typeof(responseb.error_description) != 'undefined'){document.getElementById("responsebox").innerHTML = '<div style="margin-top: 18px" class="flash flash-error mb-2">'+responseb.error_description+'</div>';}else
     {
-      if(!seriesresponsejson){document.getElementById("responsebox").innerHTML = '<div style="margin-top: 18px" class="flash flash-success mb-2">Post successfully published! See it here:<br><a href="https://peakd.com/hive-105271/@'+usern+'/'+titl+`">https://peakd.com/hive-105271/@`+window.localStorage.getItem('username')+`/`+titl+`</a>`+'</div>';};
-  if(seriesresponsejson){setTimeout(function(){
+      if(!seriesresponsejson||!document.getElementById("seriescheckbox").checked
+){document.getElementById("responsebox").innerHTML = '<div style="margin-top: 18px" class="flash flash-success mb-2">Post successfully published! See it here:<br><a href="https://peakd.com/hive-105271/@'+usern+'/'+titl+`">https://peakd.com/hive-105271/@`+window.localStorage.getItem('username')+`/`+titl+`</a>`+'</div>';};
+  if(seriesresponsejson&&document.getElementById("seriescheckbox").checked
+){setTimeout(function(){
         var url2 = "https://hivesigner.com/api/broadcast";
     
     var xhr2 = new XMLHttpRequest();
@@ -564,6 +551,8 @@ var data1 = `{
 xhr2.send(data1);},3000);}
 }
    }};
+var seriessignaturerdy=""
+if (document.getElementById("seriescheckbox").checked&&seriessignature){seriessignaturerdy=seriessignature}
 var data = `{
   "operations": [
 [
@@ -572,7 +561,7 @@ var data = `{
         "parent_author": "",
         "parent_permlink": "hive-105271",
         "title": "`+posttit.replace(/\"/g,'\\\"')+`",
-        "body": "`+(simplemde.value()+seriessignature).replace(/\n/g,'\\n').replace(/\"/g,'\\"')+`",
+        "body": "`+(simplemde.value()+seriessignaturerdy).replace(/\n/g,'\\n').replace(/\"/g,'\\"')+`",
         "author": "`+window.localStorage.getItem('username')+`",
         "permlink": "`+titl.toLowerCase()+`",
         "json_metadata": "{\\"tags\\":`+`[\\"`+tags.join([separator = '\\",\\"'])+`\\"]`+`,\\"wrp\\":[\\"`+wrp+`\\"],\\"shm\\":[\\"`+shm+`\\"],\\"usr\\":[\\"`+usr+`\\"]}"
