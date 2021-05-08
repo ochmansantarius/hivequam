@@ -493,7 +493,7 @@ var patch_text = '';
 function publishali() {
 var optionalseries = ""
 
-if(seriesresponsejson){var optionalseries=`,[
+if(seriesresponsejson){var optionalseries=`[
       "comment",
       {
         "parent_author": "",
@@ -521,14 +521,50 @@ xhr.setRequestHeader("Accept", "application/json");
 xhr.onreadystatechange = function () {
    if (xhr.readyState === 4) {
     console.log("data = "+data);
-    var responseb = JSON.parse(xhr.responseText)
+    var responseb = JSON.parse(xhr.responseText);
       console.log(xhr.status);
       console.log(xhr.responseText);
+          if(typeof(responseb.error_description) != 'undefined'){document.getElementById("responsebox").innerHTML = '<div style="margin-top: 18px" class="flash flash-error mb-2">'+responseb.error_description+'</div>';}else
+    {document.getElementById("responsebox").innerHTML = '<div style="margin-top: 18px" class="flash flash-success mb-2">Post successfully published! See it here:<br><a href="https://peakd.com/hive-105271/@'+usern+'/'+titl+`">https://peakd.com/hive-105271/@`+window.localStorage.getItem('username')+`/`+titl+`</a>`+'</div>';
+  if(seriesresponsejson){setTimeout(function(){
+        var url2 = "https://hivesigner.com/api/broadcast";
+    
+    var xhr2 = new XMLHttpRequest();
+    xhr2.open("POST", url2);
+    
+    xhr2.setRequestHeader("Authorization", "\""+window.localStorage.getItem('sc_token')+"\"");
+    xhr2.setRequestHeader("Content-Type", "application/json");
+    xhr2.setRequestHeader("Accept", "application/json");
+    
+    xhr2.onreadystatechange = function () {
+       if (xhr2.readyState === 4) {
+         var responseb2 = JSON.parse(xhr2.responseText)
+          console.log(xhr2.status);
+          console.log(xhr2.responseText);
+          if(typeof(responseb2.error_description) != 'undefined'){document.getElementById("responsebox").innerHTML = '<div style="margin-top: 18px" class="flash flash-error mb-2">'+   responseb2.error_description+'</div>';}
+         else {document.getElementById("responsebox").innerHTML = '<div style="margin-top: 18px" class="flash flash-success mb-2">Post successfully published! See it here:<br><a     href="https://peakd.com/hive-105271/@'+usern+'/'+titl+`">https://peakd.com/hive-105271/@`+window.localStorage.getItem('username')+`/`+titl+`</a><br>The "`+createdseriesname    +`" series was successfully created/updated`+'</div>';}
+}
+   ;
+};
 
-    if(typeof(responseb.error_description) != 'undefined')
-    {document.getElementById("responsebox").innerHTML = '<div style="margin-top: 18px" class="flash flash-error mb-2">'+responseb.error_description+'</div>';
-} else {
-  document.getElementById("responsebox").innerHTML = '<div style="margin-top: 18px" class="flash flash-success mb-2">'+responseb.result.id+'</div>';
+var data1 = `{
+  "operations": [
+[
+      "comment",
+      {
+        "parent_author": "",
+        "parent_permlink": "hive-105271",
+        "title": "`+seriesresponsejson.title.replace(/\"/g,'\\\"')+`",
+        "body": "`+prevseriesbody.replace(/\n/g,'\\n').replace(/\"/g,'\\"')+`",
+        "author": "`+seriesresponsejson.author+`",
+        "permlink": "`+seriesresponsejson.permlink+`",
+        "json_metadata": "`+seriesresponsejson.json_metadata.replace(/\"/g,'\\\"')+`"
+      }
+    ]
+  ]
+}`;
+
+xhr2.send(data1);},3500);}
 }
    }};
 var data = `{
@@ -574,7 +610,7 @@ var data = `{
     "id": "reblog",
     "json": "[\\"reblog\\", {\\"account\\":\\"`+window.localStorage.getItem('username')+`\\",\\"author\\":\\"`+window.localStorage.getItem('username')+`\\",\\"permlink\\":\\"`+titl.toLowerCase()+`\\"}]"
   }
-]`+optionalseries+`
+]
   ]
 }`;
 
@@ -670,7 +706,7 @@ xhr.onreadystatechange = function () {
     if(typeof(responseb.error_description) != 'undefined')
     {document.getElementById("responsebox").innerHTML = '<div style="margin-top: 18px" class="flash flash-error mb-2">'+responseb.error_description+'</div>';
 } else {
-  document.getElementById("responsebox").innerHTML = '<div style="margin-top: 18px" class="flash flash-success mb-2">'+responseb.result.id+'</div>';
+  document.getElementById("responsebox").innerHTML = '<div style="margin-top: 18px" class="flash flash-success mb-2">Post successfully published! See it here:<br><a href="https://peakd.com/hive-105271/@'+usern+'/'+titl+`">https://peakd.com/hive-105271/@`+window.localStorage.getItem('username')+`/`+titl+`</a>`+'</div>';
 }
    }};
 var data = `{
