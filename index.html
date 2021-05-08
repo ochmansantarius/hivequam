@@ -326,9 +326,6 @@ else {}</script>
 
 <script>'usr='+urlParams.get('usr')+'&wrp='+urlParams.get('wrp')+'&shm='+urlParams.get('shm')+'&tltl='+urlParams.get('titl')</script>
 
-            <script>
-                var val = btoa('usr='+urlParams.get('usr')+'&wrp='+urlParams.get('wrp')+'&shm='+urlParams.get('shm')+'&tltl='+urlParams.get('titl'));
-            </script>
 <div id="main" v-cloak style="margin: auto; width: 50%; border: 0px solid gray; padding: 20px;">
   <p v-if="!isInit">Loading...</p>
   <div v-else>
@@ -489,7 +486,7 @@ window.onload = function() {
 
 var patch_text = '';
 
-function publishali() {
+function publishali(){
 var optionalseries = ""
 
 if(seriesresponsejson){var optionalseries=`[
@@ -584,7 +581,7 @@ var data = `{
   "comment_options",
   {
     "author": "`+window.localStorage.getItem('username')+`",
-    "permlink": "`+titl+`",
+    "permlink": "`+titl.toLowerCase()+`",
     "max_accepted_payout": "1000000.000 HBD",
     "percent_hbd": 10000,
     "allow_votes": true,
@@ -615,7 +612,7 @@ var data = `{
 
 xhr.send(data)
 return;
-}  
+}
 
 function editali() {
 
@@ -677,7 +674,7 @@ var data = `{
 
 xhr.send(data)
 return;
-}  
+}
 
 
 function updateali() {
@@ -726,7 +723,7 @@ var data = `{
   "comment_options",
   {
     "author": "`+window.localStorage.getItem('username')+`",
-    "permlink": "`+titl+`",
+    "permlink": "`+titl.toLowerCase()+`",
     "max_accepted_payout": "1000000.000 HBD",
     "percent_hbd": 10000,
     "allow_votes": true,
@@ -1402,7 +1399,7 @@ xhr.onreadystatechange = function () {
       if (seriesresponsejson.body.split('<serieslast>')[1]){
         seriessignature=`
 
-        -----------
+-----------
 <serieslast><center><h4>Too see this building on the Aliquam.org Minecraft Server, type:</h4></center><center>\`/hive open `+seriesresponsejson.author+` `+titl+`\`</center>
 
 <prevlink>
@@ -1416,7 +1413,6 @@ xhr.onreadystatechange = function () {
 
         prevsignature=`
 
-        -----------
 <serieslast><center><h4>Too see this building on the Aliquam.org Minecraft Server, type:</h4></center><center>\`/hive open `+seriesresponsejson.author+` `+seriesresponsejson.permlink+`\`</center>
 
 <prevlink>`+seriesresponsejson.body.split('<serieslast>')[1]+`<prevlink>
@@ -1426,7 +1422,7 @@ xhr.onreadystatechange = function () {
 
 <center>This is post #<sernum>`+seriesresponsejson.body.split('<sernum>')[1]+`<sernum> on the <seriesurl>[<seriesname>`+seriesresponsejson.body.split('<seriesname>')[1]+`<seriesname>](`+seriesresponsejson.body.split('<seriesurl>')[1].split('(')[1].split(')')[0]+`)<seriesurl> series published by the Hivequam Minecraft Plugin. See others here.</center><serieslast>`
       var dmp = new diff_match_patch();
-      var diff = dmp.diff_main(seriesresponsejson.body,seriesresponsejson.body+prevsignature, true);
+      var diff = dmp.diff_main(seriesresponsejson.body,seriesresponsejson.body.split('<serieslast>')[0]+prevsignature, true);
         if (diff.length > 2) {
           dmp.diff_cleanupSemantic(diff);
         }
@@ -1438,7 +1434,7 @@ xhr.onreadystatechange = function () {
       }else{
         seriessignature=`
 
-        -----------
+-----------
 <serieslast><center><h4>Too see this building on the Aliquam.org Minecraft Server, type:</h4></center><center>\`/hive open `+usern+` `+titl+`\`</center>
 
 <prevlink>
@@ -1453,7 +1449,7 @@ xhr.onreadystatechange = function () {
 
         prevsignature=`
 
-        -----------
+-----------
 <serieslast><center><h4>Too see this building on the Aliquam.org Minecraft Server, type:</h4></center><center>\`/hive open `+seriesresponsejson.author+` `+seriesresponsejson.permlink+`\`</center>
 
 <prevlink>
