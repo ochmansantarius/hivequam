@@ -382,7 +382,6 @@ link.href = btoa(urlparameters);</script>
 <script type="text/javascript">
 const queryString = window.location.search;
 console.log(queryString);
-const urlParams = new URLSearchParams(queryString);
 const usr = urlParams.get('usr');
 const wrp = urlParams.get('wrp');
 const shm = urlParams.get('shm');
@@ -901,7 +900,7 @@ var simplemde = new SimpleMDE({promptURLs: true, autosave: {
   tabSize : 1});
 
 </script>
-<script>setInterval(function(){if ((window.location.search.indexOf('usr') !== -1) && (window.localStorage.getItem('sc_token') !== null) && (window.location.search.indexOf('access_token') !== -1)) {window.location.replace('https://hive.aliquam.org/?username='+urlParams.get('username')+alimeta)}},1500);</script>
+<script>setInterval(function(){if ((window.location.search.indexOf('usr') !== -1) && (window.localStorage.getItem('sc_token') !== null) && (window.location.search.indexOf('access_token') !== -1)) {window.location.replace('https://hive.aliquam.org/?username='+urlParams.get('username')+alimeta)}},111500);</script>
 <script>setInterval(function(){if (document.getElementById('markdowntitle').value == '') {document.getElementById('markdowntitle').value = '"'+titl+'" by '+usr}},10000);</script>
 
 <script>if (window.location.search.indexOf('usr') == -1) {
@@ -1565,4 +1564,5 @@ label {
 
 </style>
 
-<script>if(urlParams.get('mode')==null||urlParams.get('mode')=="null"||urlParams.get('mode')=="publish"){document.getElementById("divwithcheckbox").style.display = ""}</script>
+<script>if(urlParams.get('mode')==null||urlParams.get('mode')=="null"||urlParams.get('mode')=="publish"){document.getElementById("divwithcheckbox").style.display = ""}
+var urlParams = new URLSearchParams(queryString);</script>
