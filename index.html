@@ -1327,7 +1327,7 @@ xhr.onreadystatechange = function () {
       console.log(xhr.responseText);
       seriesroot=JSON.parse(xhr.responseText);
       function printElt(element, index, array) {
-if(JSON.parse(element.json_metadata).wrp && JSON.parse(element.json_metadata).wrp.toString().length>80 && element.body.split('<serieslast>')[1]&&!element.body.split('<series>')[1]&&!element.body.split('<seriesepisode1>')[1]{
+if(JSON.parse(element.json_metadata).wrp && JSON.parse(element.json_metadata).wrp.toString().length>80 && element.body.split('<serieslast>')[1]&&!element.body.includes("<series>")&&!element.body.includes("<seriesepisode1>")){
 
   var addbox1 = document.getElementById("seltoseries");
   var option = document.createElement("option");
@@ -1341,7 +1341,7 @@ if(JSON.parse(element.json_metadata).wrp && JSON.parse(element.json_metadata).wr
   console.log(element.permlink+" "+JSON.parse(element.json_metadata).wrp.toString().length)}
 }
 function printEltnew(element, index, array) {
-if(JSON.parse(element.json_metadata).wrp && JSON.parse(element.json_metadata).wrp.toString().length>80 && !element.body.split('<serieslast>')[1]&&!element.body.split('<series>')[1]&&!element.body.split('<seriesepisode1>')[1]){
+if(JSON.parse(element.json_metadata).wrp && JSON.parse(element.json_metadata).wrp.toString().length>80 && !element.body.split('<serieslast>')[1]&&!element.body.includes("<series>")&&!element.body.includes("<seriesepisode1>")){
 
   var addbox1 = document.getElementById("seltoseries");
   var option = document.createElement("option");
