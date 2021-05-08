@@ -390,8 +390,7 @@ const usern = window.localStorage.getItem('username');
 const titl = urlParams.get('titl').toLowerCase();
 var alitag = '&usr='+usr+'&wrp='+wrp+'&shm='+shm+'&titl='+titl+'&mode='+urlParams.get('mode')+'&author='+urlParams.get('author');
 var alitagx = btoa(alitag);
-const state = urlParams.get('state');
-var alimeta = atob(state);
+var alimeta = atob(urlParams.get('state'));
 </script>
 <script type="text/javascript">
 const client = new hivesigner.Client({
