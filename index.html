@@ -1403,14 +1403,14 @@ xhr.onreadystatechange = function () {
 
         prevsignature=`
 
-<serieslast><center><h4>Too see this building on the Aliquam.org Minecraft Server, type:</h4></center><center>\`/hive open `+seriesresponsejson.author+` `+seriesresponsejson.permlink+`\`</center>
+<series><center><h4>Too see this building on the Aliquam.org Minecraft Server, type:</h4></center><center>\`/hive open `+seriesresponsejson.author+` `+seriesresponsejson.permlink+`\`</center>
 
 <prevlink>`+seriesresponsejson.body.split('<prevlink>')[1]+`<prevlink>
 <nextlink>
 <div class"pull-right"><a href="https://peakd.com/hive-105271/@`+seriesresponsejson.author+`/`+titl+`"><img src="https://images.hive.blog/140x240/https://i.imgur.com/nBZlEM7.png"></a></div>
 <nextlink>
 
-<center>This is post #<sernum>`+seriesresponsejson.body.split('<sernum>')[1]+`<sernum> on the <seriesurl>[<seriesname>`+seriesresponsejson.body.split('<seriesname>')[1]+`<seriesname>](`+seriesresponsejson.body.split('<seriesurl>')[1].split('(')[1].split(')')[0]+`)<seriesurl> series published by the Hivequam Minecraft Plugin. See others here.</center><serieslast>`
+<center>This is post #<sernum>`+seriesresponsejson.body.split('<sernum>')[1]+`<sernum> on the <seriesurl>[<seriesname>`+seriesresponsejson.body.split('<seriesname>')[1]+`<seriesname>](`+seriesresponsejson.body.split('<seriesurl>')[1].split('(')[1].split(')')[0]+`)<seriesurl> series published by the Hivequam Minecraft Plugin. See others here.</center><series>`
       var dmp = new diff_match_patch();
       var newseredit
       if(seriesresponsejson.body.split('<serieslast>')[0]){newseredit=seriesresponsejson.body.split('<serieslast>')[0]} else {newseredit=seriesresponsejson.body};
@@ -1442,7 +1442,7 @@ xhr.onreadystatechange = function () {
         prevsignature=`
 
 -----------
-<serieslast><center><h4>Too see this building on the Aliquam.org Minecraft Server, type:</h4></center><center>\`/hive open `+seriesresponsejson.author+` `+seriesresponsejson.permlink+`\`</center>
+<seriesepisode1><center><h4>Too see this building on the Aliquam.org Minecraft Server, type:</h4></center><center>\`/hive open `+seriesresponsejson.author+` `+seriesresponsejson.permlink+`\`</center>
 
 <prevlink>
 <div class"pull-left"><img src="https://images.hive.blog/140x240/https://i.imgur.com/xIIyvOn.png"></div>
@@ -1451,7 +1451,7 @@ xhr.onreadystatechange = function () {
 <div class"pull-right"><a href="https://peakd.com/hive-105271/@`+seriesresponsejson.author+`/`+titl+`"><img src="https://images.hive.blog/140x240/https://i.imgur.com/nBZlEM7.png"></a></div>
 <nextlink>
 
-<center>This is post #<sernum>1<sernum> on the <seriesurl>[<seriesname>`+createdseriesname+`<seriesname>](https://peakd.com`+seriesresponsejson.url+`)<seriesurl> series published by the Hivequam Minecraft Plugin. See others here.</center><serieslast>`
+<center>This is post #<sernum>1<sernum> on the <seriesurl>[<seriesname>`+createdseriesname+`<seriesname>](https://peakd.com`+seriesresponsejson.url+`)<seriesurl> series published by the Hivequam Minecraft Plugin. See others here.</center><seriesepisode1>`
 
       var dmp = new diff_match_patch();
       var diff = dmp.diff_main(seriesresponsejson.body,seriesresponsejson.body+prevsignature, true);
